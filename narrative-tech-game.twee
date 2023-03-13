@@ -27,7 +27,7 @@ You approach the person. It appears to be a man in a lab coat wearing some sort 
 
 "How did you get here?! You're not supposed to be here!"
 
-He grabs a hand sized object, presses a button and then [[... |Bed]]
+He grabs a hand sized object, presses a button and then[[... |Bed]]
 
 [[Check Inventory |Inventory]](set: $location to (passage:)'s name)
 
@@ -88,13 +88,16 @@ You open the window completely.
 
 
 
-:: \ basement fire {"position":"3500,1500","size":"100,100"}
+:: \ basement fire {"position":"3300,1800","size":"100,100"}
+Soon the entire basement is engulfed in flames. You're trapped. You slowly asphyxiate [[You're dead. |Bed]]
+
+[[Check Inventory |Inventory]](set: $location to (passage:)'s name)
 
 
-
-:: \ building leave {"position":"3700,1000","size":"100,100"}
+:: \ building leave {"position":"4100,1000","size":"100,100"}
 You run out into the world - free. 
 
+[[The End]]
 
 
 
@@ -160,8 +163,10 @@ You approach the sturdy steel door. (if: $playerDoorUnlocked is false)[You turn 
 [[Check Inventory |Inventory]](set: $location to (passage:)'s name)
 
 
-:: \ robot surrender {"position":"3500,1700","size":"100,100"}
+:: \ robot surrender {"position":"3300,1600","size":"100,100"}
+The robots surrender to you and let you be. [[Walk forward?|deep basement]]
 
+[[Check Inventory |Inventory]](set: $location to (passage:)'s name)
 
 
 :: $location {"position":"600,75","size":"100,100"}
@@ -169,17 +174,17 @@ You approach the sturdy steel door. (if: $playerDoorUnlocked is false)[You turn 
 
 
 :: Approach the robots? {"position":"3100,1400","size":"100,100"}
-You begin to approach the robots. (if: $hasBlackBoots is false)[The electricity strikes you and you are electrocuted. [[You're dead.|Bed]]] (if: $hasBlackBoots is true)[(if:$cutFinger is false)[You make your way to the robots. They begin to attack. [[Attack the robots?]]] (if: $cutFinger is true)[[Convince the robots you are one of them?]]
+You begin to approach the robots. (if: $hasBlackBoots is false)[The electricity strikes you and you are electrocuted. [[You're dead.|Bed]]](if: $hasBlackBoots is true and $cutFinger is false)[You make your way to the robots. They begin to attack. [[Attack the robots?]]](if: $hasBlackBoots is true and $cutFinger is true)[[Convince the robots you are one of them?]]
 
 [[Check Inventory |Inventory]](set: $location to (passage:)'s name)
 
 
-:: Attack the robots? {"position":"3300,1500","size":"100,100"}
+:: Attack the robots? {"position":"3100,1600","size":"100,100"}
 (if: $hasChefKnife is true)[You strike at the robots cutting some of their wiring and lubrication channels. Sparks and oil is flying everywhere. A fire starts. [[Oh no! | basement fire]]]
 
 (if: $hasFork is true and $hasChefKnife is false)[You strike at the robots with the fork. This did not go as planned. The robots got a hold of you. The begin tearing you apart limb from limb. [[Ahhhhhh!!!!! |robot violence]]]
 
-(if: $hasFork is false and $hasChefKnife is false)[You attempt to strike at the robots with your bare fists. They respect that you didn't use a weapon and surrender to you. [[Success? | robot surrender]]]
+(if: $hasFork is false and $hasChefKnife is false)[You can't attack the robots with your bare fists. They respect that you didn't use a weapon and surrender to you. [[Success? | robot surrender]]]
 
 [[Check Inventory |Inventory]](set: $location to (passage:)'s name)
 
@@ -200,6 +205,9 @@ You wake up in a bed with sunlight beaming onto your face. You are dressed in no
 (set: $playerDoorUnlocked to false)
 (set: $waitCount to 0)
 (set: $rossumDoorUnlocked to false)
+(set: $basementEvent to false)
+(set: $electricSwitch to true)
+(set: $lobbyDoorUnlocked to false)
 
 <!--Random Objects-->
 (set: $hasEmptyNeedles to false)
@@ -246,8 +254,10 @@ A mesmorizing, sharp blade.
 [[Back |Inventory]]
 
 
-:: Convince the robots you are one of them? {"position":"3700,1400","size":"100,100"}
+:: Convince the robots you are one of them? {"position":"3300,1400","size":"100,100"}
+You successfully convince the robots you are a less boxy more human-like robot. They let you pass unharmed. [[Walk forward?|deep basement]]
 
+[[Check Inventory |Inventory]](set: $location to (passage:)'s name)
 
 
 :: Cut yourself? {"position":"3500,50","size":"100,100"}
@@ -296,27 +306,23 @@ A simple 4-pronged stainless steel fork.
 
 :: Inventory {"position":"600,100","size":"100,100"}
 You are viewing your inventory:
-
 <!--Objects-->
 (if:$hasEmptyNeedles is true)[[Empty Needles]]
 (if: $hasFork is true)[[Fork]]
 (if: $hasChefKnife is true)[[Chef Knife]]
-
-
 <!--Clothing-->
 (if:$hasRedShirt is true)[[Red Shirt]]
 (if: $hasCargoPants is true)[[Cargo Pants]]
 (if:$hasBlackBoots is true)[[Black Boots]]
 
-(if: $hasKeyChain is true)[[Keychain]]
-
+(if: $hasKeychain is true)[[Keychain]]
 
 [[Back |$location]]
 
 
 
 :: Jump? {"position":"3500,200","size":"100,100"}
-You jump off the ledge (if:$waitCount is 0)[and plummet to you doom. [[You're dead. |Bed]]] (if: $waitCount is 8) [and land on the pavement. [[Get up? | building leave]]] 
+You jump off the ledge (if:$waitCount < 8)[and plummet to you doom. [[You're dead. |Bed]]] (if: $waitCount is 8) [and land on the pavement. [[Get up? | building leave]]] 
 
 [[Check Inventory |Inventory]](set: $location to (passage:)'s name)
 
@@ -376,20 +382,40 @@ You are now wearing the red t-shirt.
 
 
 
-:: basement {"position":"2900,1400","size":"100,100"}
-You enter the basement. There's electricity crackling everywhere. There's two [[robots. |basement robots]][[Approach the robots?]]
+:: The End {"position":"4300,1000","size":"100,100"}
+Thanks for playing my game Rossum's Apartment. I hope you enjoyed. My intention with the game was to show that only someone resonable, and aware could make it out - a robot, or a pacifist, non-violent human. This touches on themes of what it means to be human. I believe that the use of graphic violence may make this a bit problematic. However, I believe the graphic violence supports what it means to be human. If you managed to get to this on your first play through be warned there are two ways to get to this ending - the only actual ending. However, there are 10 total "endings" Good Luck! -Diego Jurado
 
-[[Back |basement stairwell]]
+
+:: basement {"position":"2900,1400","size":"100,100"}
+You enter the basement. (if: $electricSwitch is true)[There's electricity crackling everywhere.] (if: $basementEvent is false) [There's two [[robots. |basement robots]][[Approach the robots?]]] (if: $basementEvent is true)[[Walk forward? |deep basement]]
+
+[[Enter stairwell? |basement stairwell]]
 
 [[Check Inventory |Inventory]](set: $location to (passage:)'s name)
 
 
-:: basement robots {"position":"2900,1600","size":"100,100"}
+:: basement keychain {"position":"3900,1400","size":"100,100"}
+You take the keychain. It has two unmarked keys on it. One large and silver. The other bronze.
 
+[[Back |deep basement]]
+
+[[Check Inventory |Inventory]](set: $location to (passage:)'s name)
+
+(set: $hasLobbyKey to true)
+(set: $hasMysteryApartmentKey to true)
+
+
+
+:: basement robots {"position":"2900,1600","size":"100,100"}
+There are two robots that appear to be from some sort of cartoon. Big boxy bodies, and chrome in color. Their red eyes leer into yours.
+
+[[Back |basement]]
+
+[[Check Inventory |Inventory]](set: $location to (passage:)'s name)
 
 
 :: basement stairwell {"position":"2600,1400","size":"100,100"}
-You are in the stairwell in the basement [[Exit stairwell? |basement]]
+You are in the stairwell in the basement. [[Exit stairwell? |basement]]
 
 [[Go up? |first floor stairwell]]
 
@@ -409,7 +435,7 @@ You pick up the pair of black combat boots.
 :: cargo pants {"position":"1000,1000","size":"100,100"}
 You pick up the cargo pants.
 
-[[Put it on? |Take cargo pants]]
+[[Put them on? |Take cargo pants]]
 [[Back |clothes]]
 
 [[Check Inventory |Inventory]](set: $location to (passage:)'s name)
@@ -432,12 +458,32 @@ You walk to a pile of clothes. (if: $hasRedShirt is false)[There is a [[red t-sh
 [[Check Inventory |Inventory]](set: $location to (passage:)'s name)
 
 
+:: deep basement {"position":"3500,1400","size":"100,100"}
+You are now deep into the basement. There is a [[workshop table.]] There is a [[large lever on the wall. |electric switch]]
+
+[[Walk to the exit? |basement]]
+
+[[Check Inventory |Inventory]](set: $location to (passage:)'s name)
+
+(set: $basementEvent to true)
+
+
 :: dining table {"position":"1900,400","size":"100,100"}
 You approach the dining table and see a (if: $hasKeychain is false)[ [[keychain]] among the] mess on the table.
 
 [[Back |Living Room]]
 
 [[Check Inventory |Inventory]](set: $location to (passage:)'s name)
+
+
+:: electric switch {"position":"3500,1600","size":"100,100"}
+You approach the large lever. Upon closer inspection it appears to be connected to the electrical breakers. [[Flip the switch? |flip]]
+
+[[Back |deep basement]]
+
+[[Check Inventory |Inventory]](set: $location to (passage:)'s name)
+
+(set: $backup to $electricSwitch)
 
 
 :: fifth floor stairwell {"position":"2600,200","size":"100,100"}
@@ -457,6 +503,20 @@ You are in the stairwell on the first floor. [[Exit stairwell? |lobby]]
 [[Check Inventory |Inventory]](set: $location to (passage:)'s name)
 
 
+:: flip {"position":"3700,1600","size":"100,100"}
+You flip the switch.
+
+[[Back |electric switch]]
+
+[[Check Inventory |Inventory]](set: $location to (passage:)'s name)
+
+(if: $electricSwitch is true and $backup is true)[(set: $electricSwitch to false)]
+
+(if: $electricSwitch is false and $backup is false)[(set: $electricSwitch to true)]
+
+
+
+
 :: fork {"position":"1400,800","size":"100,100"}
 You look at a simple 4-pronged stainless steel fork. 
 
@@ -467,7 +527,7 @@ You look at a simple 4-pronged stainless steel fork.
 
 
 :: fourth floor hallway {"position":"2300,400","size":"100,100"}
-You enter a mysterious dimly lit hallway. In front of you is a large number 4. Behind you is the [[door to the apartment you emerged from | player apartment door]]. To your left is a [[stairwell | fourth floor stairwell]]. 
+You enter a mysterious dimly lit hallway. In front of you is a large number 4. Behind you is the [[door to the apartment you emerged from. | player apartment door]]To your left is a [[stairwell | fourth floor stairwell]]. 
 
 [[Check Inventory |Inventory]](set: $location to (passage:)'s name)
 
@@ -506,14 +566,14 @@ You approach the ledge. "Jump... jump... jump!" You're starting to hear things. 
 
 
 :: lobby {"position":"2900,1000","size":"100,100"}
-You enter a spacious and once luxurious lobby. It appears to have been abandoned. You see a [[wooden door |lobby door]], and an [[information desk. |lobby desk]]
+You enter a spacious and once luxurious lobby. It appears to have been abandoned. You see a [[wooden door|lobby door]], and an [[information desk. |lobby desk]]
 
 [[Enter stairwell? |first floor stairwell]]
 
 [[Check Inventory |Inventory]](set: $location to (passage:)'s name)
 
 
-:: lobby desk {"position":"3100,1100","size":"100,100"}
+:: lobby desk {"position":"2900,1200","size":"100,100"}
 You approach the lobby desk. There's nothing here.
 
 [[Back |lobby]]
@@ -521,21 +581,22 @@ You approach the lobby desk. There's nothing here.
 [[Check Inventory |Inventory]](set: $location to (passage:)'s name)
 
 
-:: lobby door {"position":"3300,1000","size":"100,100"}
-You approach the lobby door. (if: $lobbyDoorUnlocked is false)[You turn the knob but it appears to be locked. (if: $hasLobbyApartmentKey is false)[There appears to be a slot for a key.] (if: $hasLobbyApartmentKey is true)[[Insert the key? |lobby door event]]] 
+:: lobby door {"position":"3100,1000","size":"100,100"}
+You approach the lobby door. (if: $lobbyDoorUnlocked is false)[You turn the knob but it appears to be locked. (if: $hasLobbyKey is false)[There appears to be a slot for a key.] (if: $hasLobbyKey is true)[[Insert the key? |lobby door event]]] (if:$lobbyDoorUnlocked is true)[[Leave the building?| building leave]]
 
-(if:$lobbyDoorUnlocked is true)[[Leave the building?| building leave]]
 [[Back |lobby]]
 
 [[Check Inventory |Inventory]](set: $location to (passage:)'s name)
 
 
-:: lobby door event {"position":"3300,1150","size":"100,100"}
+:: lobby door event {"position":"3100,1200","size":"100,100"}
 You insert the key into the lobby door. You turn the key, and you hear a clicking sound. The door is now unlocked.
 
 [[Back |lobby door]]
 
 [[Check Inventory |Inventory]](set: $location to (passage:)'s name)
+
+(set: $lobbyDoorUnlocked to true)
 
 
 :: player door event {"position":"2000,275","size":"100,100"}
@@ -557,7 +618,7 @@ You pick up the red t-shirt.
 [[Check Inventory |Inventory]](set: $location to (passage:)'s name)
 
 
-:: robot violence {"position":"3300,1700","size":"100,100"}
+:: robot violence {"position":"3300,2000","size":"100,100"}
 The robots successfully dismembered you and you are bleeding out. [[You're dead. |Bed]]
 
 [[Check Inventory |Inventory]](set: $location to (passage:)'s name)
@@ -571,13 +632,17 @@ You opened the door and walked onto the rooftop. Behind you is the [[door to the
 
 
 :: rossum door event {"position":"3100,725","size":"100,100"}
-You insert the key into the lobby door. You turn the key, and you hear a clicking sound. The door is now unlocked. [[Enter the apartment?|Dr. Rossum Apartment]]
+You insert the key into the apartment door. You turn the key, and you hear a clicking sound. The door is now unlocked. [[Enter the apartment?|Dr. Rossum Apartment]]
 
 [[Check Inventory |Inventory]](set: $location to (passage:)'s name)
 
+(set: $rossumDoorUnlocked to true)
+
 
 :: second floor hallway {"position":"2900,800","size":"100,100"}
-You enter a mysterious dimly lit hallway. In front of you is a large number 2. There is a (if: $rossumDoorUnlocked is false)][[door to an apartment| Dr. Rossum apartment door]]. ] (if: $rossumDoorUnlocked is true)[[[door to an apartment|Dr. Rossum Apartment]]][[Enter the stairwell?|second floor stairwell]]. 
+You enter a mysterious dimly lit hallway. In front of you is a large number 2. There is a (if: $rossumDoorUnlocked is false)[[door to an apartment.| Dr. Rossum apartment door]] (if: $rossumDoorUnlocked is true)[[door to an apartment|Dr. Rossum Apartment]]
+
+[[Enter the stairwell?|second floor stairwell]]. 
 
 [[Check Inventory |Inventory]](set: $location to (passage:)'s name)
 
@@ -621,7 +686,7 @@ You are in the stairwell on the second floor. [[Exit stairwell? |second floor ha
 
 
 :: take the player key {"position":"2000,600","size":"100,100"}
-(if: $hasCargoPants is false)[ You don't have anywhere to put the keychain If only you had pockets] (else:)[You take the keychain (set: $hasKeychain to true)(set: $hasPlayerApartmentKey to true)]
+(if: $hasCargoPants is false)[ You don't have anywhere to put the keychain If only you had pockets] (else:)[You take the keychain. (set: $hasKeychain to true)(set: $hasPlayerApartmentKey to true)]
 
 [[Back |dining table]]
 
@@ -631,18 +696,22 @@ You are in the stairwell on the second floor. [[Exit stairwell? |second floor ha
 
 
 :: third floor hallway {"position":"2900,600","size":"100,100"}
+You try to exit the stairwell, but the door appears to be jammed shut.
 
+[[Back |third floor stairwell]]
+
+[[Check Inventory |Inventory]](set: $location to (passage:)'s name)
 
 
 :: third floor stairwell {"position":"2600,600","size":"100,100"}
-You are in the stairwell on the fourth floor. [[Exit stairwell? |third floor hallway]]
+You are in the stairwell on the third floor. [[Exit stairwell? |third floor hallway]]
 
 [[Go up? | fourth floor stairwell]]
 [[Go down? |second floor stairwell]]
 
 [[Check Inventory |Inventory]](set: $location to (passage:)'s name)
 
-[[Check Inventory |Inventory]](set: $location to (passage:)'s name)
+
 
 
 :: window {"position":"800,700","size":"100,100"}
@@ -653,3 +722,12 @@ The window is (if: $playerApartmentWindow is "cracked")[cracked open.](if: $play
 [[ Back |Bedroom]]
 
 [[Check Inventory |Inventory]](set: $location to (passage:)'s name)(if:$playerApartmentWindow is "closed")[Your Text Here]
+
+
+:: workshop table. {"position":"3700,1400","size":"100,100"}
+You approach the workshop table. There is an open toolbox, and inside is a keychain. [[Take the keychain? |basement keychain]]
+
+[[Back |deep basement]]
+
+[[Check Inventory |Inventory]](set: $location to (passage:)'s name)
+
