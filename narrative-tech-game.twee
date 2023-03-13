@@ -225,6 +225,8 @@ You wake up in a bed with sunlight beaming onto your face. You are dressed in no
 (set: $hasLobbyKey to false)
 (set: $hasMysteryApartmentKey to false)
 
+(set: $deathCount to visits - 1)
+
 
 :: Bedroom {"position":"1000,600","size":"100,100"}
 You take a look around your bedroom. It's messy. There is [[clothes]] strewn across the floor. The [[window]] is (if: $playerApartmentWindow is "cracked")[cracked open.](if: $playerApartmentWindow is "open")[open.](if: $playerApartmentWindow is "closed")[closed.] (if: $hasEmptyNeedles is false)[There are [[ empty needles ]] on you night stand.]
@@ -383,6 +385,8 @@ You are now wearing the red t-shirt.
 
 
 :: The End {"position":"4300,1000","size":"100,100"}
+You died (print: $deathCount) times before escaping to freedom.
+
 Thanks for playing my game Rossum's Apartment. I hope you enjoyed. My intention with the game was to show that only someone resonable, and aware could make it out - a robot, or a pacifist, non-violent human. This touches on themes of what it means to be human. I believe that the use of graphic violence may make this a bit problematic. However, I believe the graphic violence supports what it means to be human. If you managed to get to this on your first play through be warned there are two ways to get to this ending - the only actual ending. However, there are 10 total "endings" Good Luck! -Diego Jurado
 
 
